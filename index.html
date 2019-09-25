@@ -1,0 +1,46 @@
+<!doctype html>
+<style>
+  body {
+    margin: 0;
+  }
+  .container {
+    width: 100vw;
+    height: 100vh;
+
+    background-image: paint(blotto);
+    /* background-image: paint(slapdash); */
+
+    --blotto-tile-size: 12;
+    --blotto-color: #e59eff;
+    --blotto-amplitude: .75;
+    --blotto-max-opacity: .7;
+    --blotto-blend-mode: "multiply";
+
+    --slapdash-tile-size: 100;
+    --slapdash-color: #acbfff;
+    --slapdash-weight: 3;
+    --slapdash-probability: .266;
+    --slapdash-direction: 0;
+    --slapdash-crosshatch: 1;
+  }
+
+  .container.no-support {
+    background-color: #ddd;
+  }
+</style>
+<div class="container"></div>
+<script>
+  if ('paintWorklet' in window.CSS) {
+    Promise.all([
+      window.CSS.paintWorklet.addModule('blotto.js'),
+      window.CSS.paintWorklet.addModule('slapdash.js'),
+    ])
+    .then(() => console.log('paintWorklet loaded'))
+    .catch(() => {
+      console.error('paintWorklet did not load :(');
+      document.querySelector('.container').classList.add('no-support');
+    })
+  } else {
+    document.querySelector('.container').classList.add('no-support');
+  }
+</script>
